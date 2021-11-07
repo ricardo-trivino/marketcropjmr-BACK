@@ -65,21 +65,27 @@ UsuarioModel.getPassUsuario = async function (nickname_us, callback) {
     }
 }
 
-//método para comparar la constraseña hasheada con la original
-/*
-app.get('/compare',(req, res)=>{
-    var hashSaved = '$2b$10$fNghkTiQDd7/6fB9ZC91x.dY46WNeFDyKYzgv7F3u7g';
-    var compare = bcryptjs.compareSync('12345', hashSaved);
-    if(compare){
-        res.json('OK');
-    }else{
-        res.json('no son iguales');
-    }
-})
-*/
-
 //Añadir un nuevo usuario
 UsuarioModel.insertUsuario = async function (UsuarioData, callback) {
+    if (connection) {
+        //hash con salt=10
+        passwordhash = await bcrypt.hash(UsuarioData.contrasena_us, saltRounds)
+        //almacenar contraseña con hash en la DB
+        UsuarioData.contrasena_us = passwordhash;
+        var sql = "INSERT INTO usuarios SET ?";
+
+        connection.query(sql, UsuarioData, function (error, result) {
+            if (error) {
+                throw error;
+            }
+            else {
+                callback(null, { "msg": "Registro Insertado" });
+            }
+        });
+    }
+}
+
+UsuarioModel.insertCliente = async function (UsuarioData, callback) {
     if (connection) {
         //hash con salt=10
         passwordhash = await bcrypt.hash(UsuarioData.contrasena_us, saltRounds)

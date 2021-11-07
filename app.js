@@ -6,10 +6,12 @@ var path = require('path');//ruta
 
 var conexion = require('./app/config/index');
 
+//Middleware
 var authtoken = require('./app/middlewares/authtoken');
 
 //Rutas
 var auth = require('./app/rutas/authruta');
+var registro = require('./app/rutas/registroruta');
 var tipodoc = require('./app/rutas/tipodocruta');
 var rol = require('./app/rutas/rolruta');
 var usuario = require('./app/rutas/usuarioruta');
@@ -24,33 +26,35 @@ app.use(express.static(path.join(__dirname, 'public')));//recibe ruta
 
 app.use(function (req, res, next) {
 
-    // Stio web al que desea permitir que se conecte
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
+  // Stio web al que desea permitir que se conecte
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:4200');
 
-    // A que métodos que desea dar permisos
-    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
+  // A que métodos que desea dar permisos
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
-    // A que  encabezados se les va a dar permiso
-    res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
+  // A que  encabezados se les va a dar permiso
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
 
-    //Establezca en verdadero si necesita que el sitio web incluya cookies en las solicitudes enviadas
-    //a la API (por ejemplo, en caso de que use sesiones)
-    res.setHeader('Access-Control-Allow-Credentials', true);
+  //Establezca en verdadero si necesita que el sitio web incluya cookies en las solicitudes enviadas
+  //a la API (por ejemplo, en caso de que use sesiones)
+  res.setHeader('Access-Control-Allow-Credentials', true);
 
-    // Pase a la siguiente capa de middleware
-    next();
+  // Pase a la siguiente capa de middleware
+  next();
 });
 
+//Middleware antes del servicio
 app.use(authtoken);
 
 //Rutas para el servicio
 app.use('/auth', auth());
+app.use('/registro', registro());
 app.use('/tipodoc', tipodoc());
 app.use('/rol', rol());
 app.use('/usuario', usuario());
 
 http.createServer(app).listen(app.get('port'), function () {
-    console.log('Servidor Express escuchando por el puerto ' + app.get('port'));
-  });
+  console.log('Servidor Express escuchando por el puerto ' + app.get('port'));
+});
 
 module.exports = app;
