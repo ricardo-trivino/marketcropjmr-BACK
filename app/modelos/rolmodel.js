@@ -1,9 +1,9 @@
 var connection = require('../config/index')
-var TipoDocModel = {};
+var RolModel = {};
 
-//Obtener todos los tipos de documento
-TipoDocModel.getTiposDoc = function (callback) {
-    var sql = "SELECT `id_tipo_doc`, `tipo_doc` FROM `tipos_doc` ORDER BY `id_tipo_doc` DESC;";
+//Obtener todos los roles
+RolModel.getRoles = function (callback) {
+    var sql = "SELECT `id_rol`, `rol` FROM `roles` ORDER BY `id_rol` DESC;";
     connection.query(sql, function (error, rows) {
         if (error) {
             throw error;
@@ -13,10 +13,10 @@ TipoDocModel.getTiposDoc = function (callback) {
     });
 }
 
-//Obtener un tipo identificacion por su id
-TipoDocModel.getTipoDoc = function (id, callback) {
+//Obtener un rol por su id
+RolModel.getRol = function (id, callback) {
     if (connection) {
-        var sql = "SELECT `id_tipo_Doc`, `tipo_Doc` FROM `tipos_Doc` WHERE id_tipo_Doc = " +
+        var sql = "SELECT `id_rol`, `rol` FROM `roles` WHERE id_rol = " +
             connection.escape(id) + ";";
 
         connection.query(sql, function (error, row) {
@@ -30,12 +30,12 @@ TipoDocModel.getTipoDoc = function (id, callback) {
     }
 }
 
-//Añadir un nuevo tipo de documento
-TipoDocModel.insertTipoDoc = function (TipoDocData, callback) {
+//Añadir un nuevo rol
+RolModel.insertRol = function (RolData, callback) {
     if (connection) {
-        var sql = "INSERT INTO tipos_doc SET ?";
+        var sql = "INSERT INTO roles SET ?";
 
-        connection.query(sql, TipoDocData, function (error, result) {
+        connection.query(sql, RolData, function (error, result) {
             if (error) {
                 throw error;
             }
@@ -46,11 +46,11 @@ TipoDocModel.insertTipoDoc = function (TipoDocData, callback) {
     }
 }
 
-//Actualizar un tipo de documento
-TipoDocModel.updateTipoDoc = function (TipoDocData, callback) {
+//Actualizar un rol
+RolModel.updateRol = function (RolData, callback) {
     if (connection) {
-        var sql = "UPDATE tipos_doc SET tipo_doc = " + connection.escape(TipoDocData.tipo_doc) +
-            " WHERE id_tipo_doc = " + connection.escape(TipoDocData.id_tipo_doc) + ";";
+        var sql = "UPDATE roles SET rol = " + connection.escape(RolData.rol) +
+            " WHERE id_rol = " + connection.escape(RolData.id_rol) + ";";
 
         connection.query(sql, function (error, result) {
             if (error) {
@@ -66,10 +66,10 @@ TipoDocModel.updateTipoDoc = function (TipoDocData, callback) {
     }
 }
 
-//Eliminar un tipo de documento
-TipoDocModel.deleteTipoDoc = function (TipoDocData, callback) {
+//Eliminar un rol
+RolModel.deleteRol = function (RolData, callback) {
     if (connection) {
-        var sql = "DELETE tipos_doc FROM tipos_doc WHERE id_tipo_doc = " + connection.escape(TipoDocData.id_tipo_doc) + ";";
+        var sql = "DELETE roles FROM roles WHERE id_rol = " + connection.escape(RolData.id_rol) + ";";
 
         connection.query(sql, function (error, result) {
             if (error) {
@@ -86,4 +86,4 @@ TipoDocModel.deleteTipoDoc = function (TipoDocData, callback) {
 }
 
 //Exportar el objeto para tenerlo disponible en el controlador
-module.exports = TipoDocModel;
+module.exports = RolModel;

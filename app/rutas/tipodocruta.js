@@ -10,5 +10,5 @@ module.exports = function () {
         .get('/:id', TipoDocCtrl.obtenerTipoDoc)//obtener un tipo de doc por su id
         .put('/', TipoDocCtrl.actualizarTipoDoc)//actualizar un tipo de doc
         .delete('/', TipoDocCtrl.eliminarTipoDoc)//eliminar un tipo de doc
-return router;
+    return router;
 }

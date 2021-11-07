@@ -9,9 +9,10 @@ var conexion = require('./app/config/index');
 var authtoken = require('./app/middlewares/authtoken');
 
 //Rutas
-var tipodoc = require('./app/rutas/tipodocruta');
-var usuario = require('./app/rutas/usuarioruta');
 var auth = require('./app/rutas/authruta');
+var tipodoc = require('./app/rutas/tipodocruta');
+var rol = require('./app/rutas/rolruta');
+var usuario = require('./app/rutas/usuarioruta');
 
 var app = express();
 
@@ -43,9 +44,10 @@ app.use(function (req, res, next) {
 app.use(authtoken);
 
 //Rutas para el servicio
-app.use('/tipodoc', tipodoc());
-app.use('/usuario', usuario());
 app.use('/auth', auth());
+app.use('/tipodoc', tipodoc());
+app.use('/rol', rol());
+app.use('/usuario', usuario());
 
 http.createServer(app).listen(app.get('port'), function () {
     console.log('Servidor Express escuchando por el puerto ' + app.get('port'));
