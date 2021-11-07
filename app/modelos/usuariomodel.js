@@ -35,7 +35,7 @@ UsuarioModel.getUsuario = function (id, callback) {
 //obtener un usuario por su nickname único
 UsuarioModel.getUsuarioByNick = async function (nickname_us, callback) {
     if (connection) {
-        var sql = "SELECT `nickname_us` FROM `usuarios` WHERE nickname_us = " +
+        var sql = "SELECT `nickname_us`,`rol_us`  FROM `usuarios` WHERE nickname_us = " +
             connection.escape(nickname_us) + ";";
 
         await connection.query(sql, function (error, row) {

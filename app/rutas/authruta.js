@@ -6,5 +6,5 @@ var AuthCtrl = require('../controladores/authcontroller');
 //Exportamos las rutas para tenerlas en el middleware
 module.exports = function () {
     router.post('/login', AuthCtrl.login);//ruta para el login
-return router;
+    return router;
 }
