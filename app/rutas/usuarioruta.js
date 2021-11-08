@@ -9,6 +9,6 @@ module.exports = function () {
         .post('/', UsuarioCtrl.insertarUsuario)//insertar un tipo doc
         .get('/:id', UsuarioCtrl.obtenerUsuario)//obtener un tipo de doc por su id
         .put('/', UsuarioCtrl.actualizarUsuario)//actualizar un tipo de doc
-        .delete('/', UsuarioCtrl.eliminarUsuario)//eliminar un tipo de doc
+        .put('/:id', UsuarioCtrl.desactivarUsuario)//eliminar un tipo de doc
 return router;
 }

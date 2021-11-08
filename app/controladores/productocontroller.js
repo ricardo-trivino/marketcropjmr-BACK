@@ -10,14 +10,35 @@ function insertarProducto(req, res) {
         precio_prod: req.body.precio_prod,
         stock_prod: req.body.stock_prod,
     };
-    ProductoModel.insertProducto(ProductoData, function (error, data) {
-        if (data) {
-            res.status(200).json(data);
+    ProductoModel.getProductoByName(ProductoData.nombre_prod, function (error, data) {
+        //si el producto existe
+        if (typeof data !== 'undefined' && data.length > 0) {
+            //Sumar la cantidad al stock
+            ProductoModel.sumarStock(ProductoData.id_prod, ProductoData.stock_prod, function (error, data) {
+                //si el producto existe mostrar mensaje de stock agregado
+                if (data && data.msg) {
+                    res.status(200).json(data);
+                }
+                //si el producto no existe mostrar error
+                else {
+                    res.status(500).send({
+                        error: "sad :("
+                    });
+                }
+            });
         }
+        //el producto no existe aún
         else {
-            res.status(500).send({ error: "sad :(" });
+            ProductoModel.insertProducto(ProductoData, function (error, data) {
+                if (data) {
+                    res.status(200).json(data);
+                }
+                else {
+                    res.status(500).send({ error: "sad :(" });
+                }
+            });
         }
-    });
+    })
 }
 
 function obtenerProductos(req, res) {

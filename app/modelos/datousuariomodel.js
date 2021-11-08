@@ -3,7 +3,7 @@ var DatoUsuarioModel = {};
 
 //Obtener todos los datos_usuario
 DatoUsuarioModel.getDatosUsuario = function (callback) {
-    var sql = "SELECT `id_dato_us`, `usuario`, `dato_us_clave`, `dato_us_valor` FROM `datos_usuario` ORDER BY `id_dato_us` DESC;";
+    var sql = "SELECT `id_dato_us`, `usuario`, `dato_us_clave`, `dato_us_valor` FROM `datos_usuario` du INNER JOIN usuarios u ON u.id_usuario = du.usuario WHERE u.estado_us = 'A' ORDER BY `id_dato_us` DESC;";
     connection.query(sql, function (error, rows) {
         if (error) {
             throw error;
@@ -16,8 +16,8 @@ DatoUsuarioModel.getDatosUsuario = function (callback) {
 //Obtener un dato_usuario por su id
 DatoUsuarioModel.getDatoUsuario = function (id, callback) {
     if (connection) {
-        var sql = "SELECT `id_dato_us`, `usuario`, `dato_us_clave`, `dato_us_valor` FROM `datos_usuario` WHERE id_dato_us = " +
-            connection.escape(id) + ";";
+        var sql = "SELECT `id_dato_us`, `usuario`, `dato_us_clave`, `dato_us_valor` FROM `datos_usuario` du INNER JOIN usuarios u ON u.id_usuario = du.usuario WHERE id_dato_us = " +
+            connection.escape(id) + " AND u.estado_us = 'A';";
 
         connection.query(sql, function (error, row) {
             if (error) {

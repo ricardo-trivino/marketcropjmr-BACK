@@ -106,32 +106,26 @@ function actualizarUsuario(req, res) {
     });
 }
 
-function eliminarUsuario(req, res) {
-    var UsuarioData =
-    {
-        id_usuario: req.body.id_usuario,
-        tipo_doc_us: req.body.tipo_doc_us,
-        num_doc_us: req.body.num_doc_us,
-        pnombre_us: req.body.pnombre_us,
-        snombre_us: req.body.snombre_us,
-        papellido_us: req.body.papellido_us,
-        sapellido_us: req.body.sapellido_us,
-        contrasena_us: req.body.contrasena_us,
-        nickname_us: req.body.nickname_us,
-        rol_us: req.body.rol_us,
-        estado_us: req.body.estado_us,
-    };
-
-    UsuarioModel.deleteUsuario(UsuarioData, function (error, data) {
-        if (data && data.msg) {
-            res.status(200).json(data);
-        }
-        else {
-            res.status(500).send({
-                error: "sad :("
-            });
-        }
-    });
+function desactivarUsuario(req, res) {
+    var id = req.params.id;
+    //Revisar si el id es valido
+    if (!isNaN(id)) {
+        UsuarioModel.deactivateUsuario(id, function (error, data) {
+            //si la persona existe mostrar mensaje de desactivado
+            if (data && data.msg) {
+                res.status(200).json(data);
+            }
+            //si la persona no existe mostrar error
+            else {
+                res.status(500).send({
+                    error: "sad :("
+                });
+            }
+        });
+    }
+    else {
+        res.status(500).json({ "msg": "error" });
+    }
 }
 
 //Exportamos el controlador para tenerlo en la zona de rutas
@@ -140,5 +134,5 @@ module.exports = {
     obtenerUsuarios,
     obtenerUsuario,
     actualizarUsuario,
-    eliminarUsuario
+    desactivarUsuario
 }

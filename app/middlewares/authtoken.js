@@ -13,7 +13,12 @@ module.exports = function (req, res, next) {
                     //validar si el rol es cliente o admin
                     if (rol == 1) {
                         //El usuario es cliente
-                        res.json(rol);
+                        if (req.method == 'GET') {
+                            res.json(rol);
+                        }
+                        else {
+                            res.status(403).send({ message: 'No tiene permisos para acceder' });
+                        }
                     }
                     else {
                         //El usuario es admin

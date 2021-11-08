@@ -2,7 +2,7 @@ var UsuarioModel = require('../modelos/usuariomodel');
 var bcrypt = require('bcrypt');
 var jwt = require('jsonwebtoken');
 
-//Recibir usuaio y contraseña y validar si coinciden
+//Recibir usuario y contraseña y validar si coinciden
 function login(req, res) {
     var UsuarioData =
     {
@@ -21,17 +21,49 @@ function login(req, res) {
                     .then(match => {
                         if (match) {
                             //Acceso
-                            //Forzar nuevo inicio de sesión después de 8 días
-                            jwt.sign({ user: user }, 'secretkey', { expiresIn: '604800s' }, (err, token) => {
-                                if (err) {
-                                    console.log(error);
-                                    res.status(500).send({ error });
+                            UsuarioModel.getEstadoUsuario(UsuarioData.nickname_us, function (error, data) {
+                                var estado = data[0].estado_us;
+                                //res.send(estado);
+                                if (estado == 'A') {
+                                    //Forzar nuevo inicio de sesión después de 8 días
+                                    jwt.sign({ user: user }, 'secretkey', { expiresIn: '604800s' }, (err, token) => {
+                                        if (err) {
+                                            console.log(error);
+                                            res.status(500).send({ error });
+                                        }
+                                        else {
+                                            res.json({
+                                                message: 'Acceso',
+                                                token: token
+                                            })
+                                        }
+                                    });
                                 }
                                 else {
-                                    res.json({
-                                        message: 'Acceso',
-                                        token: token
-                                    })
+                                    UsuarioModel.activateUsuario(UsuarioData.nickname_us, function (error, data) {
+                                        //si el usuario estaba desactivado mostrar mensaje de activado de nuevo
+                                        if (data && data.msg) {
+                                            //Forzar nuevo inicio de sesión después de 8 días
+                                            jwt.sign({ user: user }, 'secretkey', { expiresIn: '604800s' }, (err, token) => {
+                                                if (err) {
+                                                    console.log(error);
+                                                    res.status(500).send({ error });
+                                                }
+                                                else {
+                                                    res.json({
+                                                        data,
+                                                        token
+                                                    });
+                                                }
+                                            });
+                                        }
+                                        //si la persona no existe mostrar error
+                                        else {
+                                            res.status(500).send({
+                                                error: "sad :("
+                                            });
+                                        }
+                                    });
                                 }
                             });
                         }

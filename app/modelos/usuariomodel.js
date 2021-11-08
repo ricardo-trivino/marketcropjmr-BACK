@@ -5,7 +5,7 @@ var UsuarioModel = {};
 
 //Obtener todos los usuarios
 UsuarioModel.getUsuarios = function (callback) {
-    var sql = "SELECT `id_usuario`, `tipo_doc_us`, `num_doc_us`, `pnombre_us`, `snombre_us`, `papellido_us`, `sapellido_us`, `contrasena_us`, `nickname_us`, `rol_us`, `estado_us` FROM `usuarios` ORDER BY `id_usuario` DESC;";
+    var sql = "SELECT `id_usuario`, `tipo_doc_us`, `num_doc_us`, `pnombre_us`, `snombre_us`, `papellido_us`, `sapellido_us`, `contrasena_us`, `nickname_us`, `rol_us`, `estado_us` FROM `usuarios` WHERE `estado_us` = 'A' ORDER BY `id_usuario` DESC;";
     connection.query(sql, function (error, rows) {
         if (error) {
             throw error;
@@ -19,7 +19,7 @@ UsuarioModel.getUsuarios = function (callback) {
 UsuarioModel.getUsuario = function (id, callback) {
     if (connection) {
         var sql = "SELECT `id_usuario`, `tipo_doc_us`, `num_doc_us`, `pnombre_us`, `snombre_us`, `papellido_us`, `sapellido_us`, `contrasena_us`, `nickname_us`, `rol_us`, `estado_us` FROM `usuarios` WHERE id_usuario = " +
-            connection.escape(id) + ";";
+            connection.escape(id) + " AND `estado_us` = 'A';";
 
         connection.query(sql, function (error, row) {
             if (error) {
@@ -69,6 +69,22 @@ UsuarioModel.getUsuarioCedula = async function (num_doc_us, callback) {
 UsuarioModel.getPassUsuario = async function (nickname_us, callback) {
     if (connection) {
         var sql = "SELECT `contrasena_us` FROM `usuarios` WHERE nickname_us = " +
+            connection.escape(nickname_us) + ";";
+
+        await connection.query(sql, function (error, row) {
+            if (error) {
+                throw error;
+            }
+            else {
+                callback(null, row);
+            }
+        });
+    }
+}
+
+UsuarioModel.getEstadoUsuario = async function (nickname_us, callback) {
+    if (connection) {
+        var sql = "SELECT `estado_us` FROM `usuarios` WHERE nickname_us = " +
             connection.escape(nickname_us) + ";";
 
         await connection.query(sql, function (error, row) {
@@ -154,20 +170,39 @@ UsuarioModel.updateUsuario = async function (UsuarioData, callback) {
     }
 }
 
-//Eliminar un usuario
-UsuarioModel.deleteUsuario = function (UsuarioData, callback) {
+//Desactivar un usuario
+UsuarioModel.deactivateUsuario = function (id, callback) {
     if (connection) {
-        var sql = "DELETE usuarios FROM usuarios WHERE id_usuario = " + connection.escape(UsuarioData.id_usuario) + ";";
+        var sql = "UPDATE usuarios set estado_us = 'I' WHERE id_usuario = " + connection.escape(id) + ";";
 
         connection.query(sql, function (error, result) {
             if (error) {
                 throw error;
             }
             else if (result.affectedRows > 0) {
-                callback(null, { "msg": "Registro Eliminado" })
+                callback(null, { "msg": "Usuario Desactivado, para activar solo inicie sesión" });
             }
             else {
-                callback(null, { "msg": "Registro no Existe" })
+                callback(null, { "msg": "Registro no Existe" });
+            }
+        });
+    }
+}
+
+//Activar un usuario
+UsuarioModel.activateUsuario = function (nickname_us, callback) {
+    if (connection) {
+        var sql = "UPDATE usuarios set estado_us = 'A' WHERE nickname_us = " + connection.escape(nickname_us) + ";";
+
+        connection.query(sql, function (error, result) {
+            if (error) {
+                throw error;
+            }
+            else if (result.affectedRows > 0) {
+                callback(null, { "msg": "Usuario Activo de nuevo" });
+            }
+            else {
+                callback(null, { "msg": "Registro no Existe" });
             }
         });
     }
