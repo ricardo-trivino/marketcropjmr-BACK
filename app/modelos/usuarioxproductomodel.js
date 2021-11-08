@@ -3,7 +3,7 @@ var UsuarioXProductoModel = {};
 
 //Obtener todos los usuariosxproductos
 UsuarioXProductoModel.getUsuariosXProductos = function (callback) {
-    var sql = "SELECT `id_us_x_prod`, `usuario`, `producto` FROM `usuarios_x_productos` ORDER BY `id_us_x_prod` DESC;";
+    var sql = "SELECT `id_us_x_prod`, `usuario`, `producto`, `cantidad`, `fecha_compra` FROM `usuarios_x_productos` ORDER BY `id_us_x_prod` DESC;";
     connection.query(sql, function (error, rows) {
         if (error) {
             throw error;
@@ -16,7 +16,7 @@ UsuarioXProductoModel.getUsuariosXProductos = function (callback) {
 //Obtener usuarioxproducto por su id
 UsuarioXProductoModel.getUsuarioXProducto = function (id, callback) {
     if (connection) {
-        var sql = "SELECT `id_us_x_prod`, `usuario`, `producto` FROM `usuarios_x_productos` WHERE id_us_x_prod = " +
+        var sql = "SELECT `id_us_x_prod`, `usuario`, `producto`, `cantidad`, `fecha_compra` FROM `usuarios_x_productos` WHERE id_us_x_prod = " +
             connection.escape(id) + ";";
 
         connection.query(sql, function (error, row) {
@@ -51,6 +51,8 @@ UsuarioXProductoModel.updateUsuarioXProducto = function (UsuarioXProductoData, c
     if (connection) {
         var sql = "UPDATE usuarios_x_productos SET usuario = " + connection.escape(UsuarioXProductoData.usuario) +
             ", producto = " + connection.escape(UsuarioXProductoData.producto) +
+            ", cantidad = " + connection.escape(UsuarioXProductoData.cantidad) +
+            ", fecha_compra = " + connection.escape(UsuarioXProductoData.fecha_compra) +
             " WHERE id_us_x_prod = " + connection.escape(UsuarioXProductoData.id_us_x_prod) + ";";
 
         connection.query(sql, function (error, result) {

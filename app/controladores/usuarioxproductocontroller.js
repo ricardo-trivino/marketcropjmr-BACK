@@ -8,6 +8,8 @@ function insertarUsuarioXProducto(req, res) {
         id_us_x_prod: null,
         usuario: req.body.usuario,
         producto: req.body.producto,
+        cantidad: req.body.cantidad,
+        fecha_compra: req.body.fecha_compra,
     };
     UsuarioXProductoModel.insertUsuarioXProducto(UsuarioXProductoData, function (error, data) {
         if (data) {
@@ -54,6 +56,8 @@ function actualizarUsuarioXProducto(req, res) {
         id_us_x_prod: req.body.id_us_x_prod,
         usuario: req.body.usuario,
         producto: req.body.producto,
+        cantidad: req.body.cantidad,
+        fecha_compra: req.body.fecha_compra,
     };
 
     UsuarioXProductoModel.updateUsuarioXProducto(UsuarioXProductoData, function (error, data) {
@@ -74,6 +78,8 @@ function eliminarUsuarioXProducto(req, res) {
         id_us_x_prod: req.body.id_us_x_prod,
         usuario: req.body.usuario,
         producto: req.body.producto,
+        cantidad: req.body.cantidad,
+        fecha_compra: req.body.fecha_compra,
     };
 
     UsuarioXProductoModel.deleteUsuarioXProducto(UsuarioXProductoData, function (error, data) {
