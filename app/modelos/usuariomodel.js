@@ -49,6 +49,23 @@ UsuarioModel.getUsuarioByNick = async function (nickname_us, callback) {
     }
 }
 
+//obtener una cedula por su nickname único
+UsuarioModel.getUsuarioCedula = async function (num_doc_us, callback) {
+    if (connection) {
+        var sql = "SELECT `num_doc_us`  FROM `usuarios` WHERE num_doc_us = " +
+            connection.escape(num_doc_us) + ";";
+
+        await connection.query(sql, function (error, row) {
+            if (error) {
+                throw error;
+            }
+            else {
+                callback(null, row);
+            }
+        });
+    }
+}
+
 UsuarioModel.getPassUsuario = async function (nickname_us, callback) {
     if (connection) {
         var sql = "SELECT `contrasena_us` FROM `usuarios` WHERE nickname_us = " +

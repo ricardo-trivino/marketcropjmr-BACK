@@ -17,14 +17,36 @@ function insertarUsuario(req, res) {
         rol_us: req.body.rol_us,
         estado_us: req.body.estado_us,
     };
-    UsuarioModel.insertUsuario(UsuarioData, function (error, data) {
-        if (data) {
-            res.status(200).json(data);
+    UsuarioModel.getUsuarioByNick(UsuarioData.nickname_us, function (error, data) {
+        //si el usuario existe
+        if (typeof data !== 'undefined' && data.length > 0) {
+            res.status(404).json({
+                "msg": "Este usuario ya existe, debe iniciar sesión"
+            });
         }
+        //el usuario no existe
         else {
-            res.status(500).send({ error: "sad :(" });
+            UsuarioModel.getUsuarioCedula(UsuarioData.num_doc_us, function (error, data) {
+                //si la cedula existe
+                if (typeof data !== 'undefined' && data.length > 0) {
+                    res.status(404).json({
+                        "msg": "Esta cedula ya existe, comuniquese con el administrador"
+                    });
+                }
+                //la cedula no existe
+                else {
+                    UsuarioModel.insertUsuario(UsuarioData, function (error, data) {
+                        if (data) {
+                            res.status(200).json(data);
+                        }
+                        else {
+                            res.status(500).send({ error: "sad :(" });
+                        }
+                    }).catch(error => console.log(error));
+                }
+            }).catch(error => console.log(error));
         }
-    });
+    }).catch(error => console.log(error));
 }
 
 function obtenerUsuarios(req, res) {

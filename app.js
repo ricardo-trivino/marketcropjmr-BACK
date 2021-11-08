@@ -15,6 +15,11 @@ var registro = require('./app/rutas/registroruta');
 var tipodoc = require('./app/rutas/tipodocruta');
 var rol = require('./app/rutas/rolruta');
 var usuario = require('./app/rutas/usuarioruta');
+var datousuario = require('./app/rutas/datousuarioruta');
+var producto = require('./app/rutas/productoruta');
+var factura = require('./app/rutas/facturaruta');
+var usuarioxproducto = require('./app/rutas/usuarioxproductoruta');
+var detallefactura = require('./app/rutas/detallefacturaruta');
 
 var app = express();
 
@@ -52,6 +57,11 @@ app.use('/registro', registro());
 app.use('/tipodoc', tipodoc());
 app.use('/rol', rol());
 app.use('/usuario', usuario());
+app.use('/datousuario', datousuario());
+app.use('/producto', producto());
+app.use('/factura', factura());
+app.use('/usuarioxproducto', usuarioxproducto());
+app.use('/detallefactura', detallefactura());
 
 http.createServer(app).listen(app.get('port'), function () {
   console.log('Servidor Express escuchando por el puerto ' + app.get('port'));

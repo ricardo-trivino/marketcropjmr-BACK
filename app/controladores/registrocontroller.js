@@ -19,14 +19,36 @@ function registroCliente(req, res) {
         rol_us: 1,
         estado_us: 'A',
     };
-    UsuarioModel.insertCliente(UsuarioData, function (error, data) {
-        if (data) {
-            res.status(200).json(data);
+    UsuarioModel.getUsuarioByNick(UsuarioData.nickname_us, function (error, data) {
+        //si el usuario existe
+        if (typeof data !== 'undefined' && data.length > 0) {
+            res.status(404).json({
+                "msg": "Este usuario ya existe, debe iniciar sesión"
+            });
         }
+        //el usuario no existe
         else {
-            res.status(500).send({ error: "sad :(" });
+            UsuarioModel.getUsuarioCedula(UsuarioData.num_doc_us, function (error, data) {
+                //si la cedula existe
+                if (typeof data !== 'undefined' && data.length > 0) {
+                    res.status(404).json({
+                        "msg": "Esta cedula ya existe, comuniquese con el administrador"
+                    });
+                }
+                //la cedula no existe
+                else {
+                    UsuarioModel.insertCliente(UsuarioData, function (error, data) {
+                        if (data) {
+                            res.status(200).json(data);
+                        }
+                        else {
+                            res.status(500).send({ error: "sad :(" });
+                        }
+                    }).catch(error => console.log(error));
+                }
+            }).catch(error => console.log(error));
         }
-    });
+    }).catch(error => console.log(error));
 }
 
 //Exportamos el controlador para tenerlo en la zona de rutas
