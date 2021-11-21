@@ -3,7 +3,7 @@ var ProductoModel = {};
 
 //Obtener todos los productos
 ProductoModel.getProductos = function (callback) {
-    var sql = "SELECT `id_prod`, `nombre_prod`, `precio_prod`, `stock_prod` FROM `productos` WHERE `stock_prod` > 0 ORDER BY `id_prod` DESC;";
+    var sql = "SELECT `id_prod`, `nombre_prod`, `precio_prod`, `stock_prod`, `img_prod` FROM `productos` WHERE `stock_prod` > 0 ORDER BY `id_prod` DESC;";
     connection.query(sql, function (error, rows) {
         if (error) {
             throw error;
@@ -16,7 +16,7 @@ ProductoModel.getProductos = function (callback) {
 //Obtener un producto por su id
 ProductoModel.getProducto = function (id, callback) {
     if (connection) {
-        var sql = "SELECT `id_prod`, `nombre_prod`, `precio_prod`, `stock_prod` FROM `productos` WHERE id_prod = " +
+        var sql = "SELECT `id_prod`, `nombre_prod`, `precio_prod`, `stock_prod`, `img_prod` FROM `productos` WHERE id_prod = " +
             connection.escape(id) + " AND `stock_prod` > 0;";
 
         connection.query(sql, function (error, row) {
