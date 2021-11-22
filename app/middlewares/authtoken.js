@@ -1,8 +1,9 @@
 var jwt = require('jsonwebtoken');
+var cookieParser = require('cookie-parser');
 
 module.exports = function (req, res, next) {
     //******provisional ruta completa productos*////////
-    if (req.path != '/producto' && req.method != 'GET') {
+    if (req.path != '/producto') {
         //Si la ruta no es login
         if (req.path != '/auth/login') {
             //Si la ruta tampoco es registro

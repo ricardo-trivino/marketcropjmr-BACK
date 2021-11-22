@@ -31,11 +31,18 @@ function login(req, res) {
                                             console.log(error);
                                             res.status(500).send({ error });
                                         }
+                                        //else {
+                                        //response.setHeader('Set-Cookie', token);
+                                        //res.cookie('token', token/*, {httpOnly: true}*/);
+                                        //console.log(req.cookies);
+                                        //res.send(token,{httpOnly: true});
+                                        //res.status(200).send(token)
+                                        //console.log(token);
+                                        //}
                                         else {
                                             res.json({
-                                                message: 'Acceso',
-                                                token: token
-                                            })
+                                                token
+                                            });
                                         }
                                     });
                                 }

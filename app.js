@@ -3,6 +3,7 @@ var express = require('express');
 var bodyParser = require('body-parser'), port = 3000;
 var http = require('http');//protocolo de intercambio de archivos
 var path = require('path');//ruta
+var cookieParser = require('cookie-parser');
 
 var conexion = require('./app/config/index');
 
@@ -28,6 +29,7 @@ app.set('port', process.env.PORT || port);//metodo para recibir puerto y proceso
 app.use(bodyParser.json({ type: 'application/json', limit: '10mb' }));//recibe un cuerpo y un objeto json
 app.use(bodyParser.urlencoded({ extended: false }));//recibe url codificada
 app.use(express.static(path.join(__dirname, 'public')));//recibe ruta
+app.use(cookieParser());
 
 app.use(function (req, res, next) {
 
@@ -64,6 +66,7 @@ app.use('/usuarioxproducto', usuarioxproducto());
 app.use('/detallefactura', detallefactura());
 
 http.createServer(app).listen(app.get('port'), function () {
+  //res.setHeader('Set-Cookie', ['type=ninja', 'language=javascript']);
   console.log('Servidor Express escuchando por el puerto ' + app.get('port'));
 });
 
