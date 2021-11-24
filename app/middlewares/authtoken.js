@@ -16,19 +16,18 @@ module.exports = function (req, res, next) {
                         //validar si el rol es cliente o admin
                         if (rol == 1) {
                             //El usuario es cliente
-                            if (req.method == 'GET') {
-                                res.json(rol);
-                            }
-                            else {
-                                res.status(403).send({ message: 'No tiene permisos para acceder' });
-                            }
+                            res.json({
+                                "rol": rol
+                            });
                         }
                         else {
                             //El usuario es admin
-                            next();//dejar ingresar al usuario
+                            res.json({
+                                "rol": rol
+                            });
                         }
                     });
-                } else res.status(403).send({ message: 'No tiene permisos para acceder' });
+                } else res.json({ "mensaje": "No tiene permisos para acceder" });
             }
             //Todos los usuarios pueden acceder al registro
             else next();

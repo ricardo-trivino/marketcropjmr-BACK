@@ -58,7 +58,6 @@ function login(req, res) {
                                                 }
                                                 else {
                                                     res.json({
-                                                        data,
                                                         token
                                                     });
                                                 }
