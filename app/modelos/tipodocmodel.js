@@ -16,7 +16,7 @@ TipoDocModel.getTiposDoc = function (callback) {
 //Obtener un tipo identificacion por su id
 TipoDocModel.getTipoDoc = function (id, callback) {
     if (connection) {
-        var sql = "SELECT `id_tipo_Doc`, `tipo_Doc` FROM `tipos_Doc` WHERE id_tipo_Doc = " +
+        var sql = "SELECT `id_tipo_doc`, `tipo_doc` FROM `tipos_doc` WHERE id_tipo_doc = " +
             connection.escape(id) + ";";
 
         connection.query(sql, function (error, row) {
