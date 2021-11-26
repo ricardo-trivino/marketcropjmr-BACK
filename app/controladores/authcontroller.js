@@ -31,14 +31,6 @@ function login(req, res) {
                                             console.log(error);
                                             res.status(500).send({ error });
                                         }
-                                        //else {
-                                        //response.setHeader('Set-Cookie', token);
-                                        //res.cookie('token', token/*, {httpOnly: true}*/);
-                                        //console.log(req.cookies);
-                                        //res.send(token,{httpOnly: true});
-                                        //res.status(200).send(token)
-                                        //console.log(token);
-                                        //}
                                         else {
                                             res.json({
                                                 token
@@ -75,7 +67,10 @@ function login(req, res) {
                         }
                         else {
                             //Contraseña incorrecta
-                            res.status(200).send({ message: 'Datos incorrectos' });
+                            res.status(404).send({ message: 'Contraseña incorrecta' });
+                            /*res.status(404).json({
+                                "msg": "Contraseña incorrecta"
+                            });*/
                         }
                     }).catch(error => {
                         console.log(error);
@@ -85,9 +80,10 @@ function login(req, res) {
         }
         //Usuario no existe
         else {
-            res.status(404).json({
-                "msg": "Datos incorrectos"
-            });
+            res.status(404).send({ message: 'Usuario incorrecto' });
+            /*res.status(404).json({
+                "msg": "Usuario incorrecto"
+            });*/
         }
     }).catch(error => console.log(error));
 }

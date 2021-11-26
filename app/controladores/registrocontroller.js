@@ -22,18 +22,20 @@ function registroCliente(req, res) {
     UsuarioModel.getUsuarioByNick(UsuarioData.nickname_us, function (error, data) {
         //si el usuario existe
         if (typeof data !== 'undefined' && data.length > 0) {
-            res.status(404).json({
+            res.status(404).send({ message: 'Este usuario ya existe, debe iniciar sesión' });
+            /*res.status(404).json({
                 "msg": "Este usuario ya existe, debe iniciar sesión"
-            });
+            });*/
         }
         //el usuario no existe
         else {
             UsuarioModel.getUsuarioCedula(UsuarioData.num_doc_us, function (error, data) {
                 //si la cedula existe
                 if (typeof data !== 'undefined' && data.length > 0) {
-                    res.status(404).json({
+                    res.status(404).send({ message: 'Esta cedula ya existe, comuniquese con el administrador' });
+                    /*res.status(404).json({
                         "msg": "Esta cedula ya existe, comuniquese con el administrador"
-                    });
+                    });*/
                 }
                 //la cedula no existe
                 else {
@@ -42,13 +44,14 @@ function registroCliente(req, res) {
                             res.status(200).json(data);
                         }
                         else {
-                            res.status(500).send({ error: "sad :(" });
+                            res.status(404).send({ message: 'Sad' });
+                            //res.status(500).send({ error: "sad :(" });
                         }
-                    }).catch(error => console.log(error));
+                    }).catch(error => res.status(404).send({ message: 'Esta cedula ya existe, comuniquese con el administrador' })/*console.log(error)*/);
                 }
-            }).catch(error => console.log(error));
+            }).catch(error => res.status(404).send({ message: 'Esta cedula ya existe, comuniquese con el administrador' })/*console.log(error)*/);
         }
-    }).catch(error => console.log(error));
+    }).catch(error => res.status(404).send({ message: 'Esta cedula ya existe, comuniquese con el administrador' })/*console.log(error)*/);
 }
 
 //Exportamos el controlador para tenerlo en la zona de rutas
