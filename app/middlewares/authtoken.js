@@ -14,8 +14,15 @@ module.exports = function (req, res, next) {
                         jwt.verify(token, 'secretkey', function (error, decoded) {
                             if (error) return res.status(403).send({ message: 'No tiene permisos para acceder', error });
                             var rol = decoded.user[0].rol_us;
+                            if (req.path != '/usuario' && rol == 2) {
+                                res.json({
+                                    "rol": rol
+                                });
+                            } else {
+                                next();
+                            }
                             //validar si el rol es cliente o admin
-                            if (rol == 1) {
+                            /*if (rol == 1) {
                                 //El usuario es cliente
                                 res.json({
                                     "rol": rol
@@ -26,7 +33,7 @@ module.exports = function (req, res, next) {
                                 res.json({
                                     "rol": rol
                                 });
-                            }
+                            }*/
                         });
                     } else res.json({ "mensaje": "No tiene permisos para acceder" });
                 }
